@@ -1,5 +1,7 @@
 # PPT SVG Code Paste
 
+繁體中文 | [English](README.en.md)
+
 PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量圖插入目前的投影片，不用先存成 .svg 檔再匯入。
 
 適合把 AI 生成或從圖示庫複製來的 SVG 程式碼，快速放進簡報，而不用再透過增益集的 Claude for PowerPoint 的助理插入圖案。
@@ -17,6 +19,7 @@ PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量�
 - 可設定插入寬度 (pt，0 = 原尺寸)，Ctrl+Enter 插入，可勾選插入後清空
 - 插入結果是 SVG 圖形 (向量)，可在 PPT 裡右鍵「轉換為圖形」後改色、拆解
 - 技術上使用 Office.js `setSelectedDataAsync` 搭配 `Office.CoercionType.XmlSvg`
+- 介面語言 (窗格與功能區按鈕) 跟隨 Office 顯示語言，中文顯示繁中，其他語系一律顯示英文
 
 ## 系統需求
 
@@ -51,6 +54,7 @@ PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量�
 | 「共用資料夾」分頁看不到增益集 | 確認信任中心該路徑有勾「顯示於功能表中」、PowerPoint 有完全重開，且路徑底下直接就是 `manifest.xml`。 |
 | 窗格空白或顯示載入失敗 | 確認可以連到 <https://ag-0814.github.io/ppt-svg-code-paste/taskpane.html>。 |
 | 插入按鈕是灰色、顯示「沒有連上 PowerPoint」 | 頁面是在一般瀏覽器裡開的。只有在 PowerPoint 的窗格裡才能插入。 |
+| 介面語言不對 | 在頁面網址後加 `?lang=zh` 或 `?lang=en` 可強制指定語言 (方便在瀏覽器裡測試)。 |
 
 如果仍有其他問題歡迎提 Issue 或 Pull Request。
 

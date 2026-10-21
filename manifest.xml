@@ -5,14 +5,14 @@
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
   <Id>4fa1aa32-29a9-4519-82dd-e7d9b2a5e3cc</Id>
-  <Version>1.0.0.0</Version>
+  <Version>1.0.1.0</Version>
   <ProviderName>AG-0814</ProviderName>
   <DefaultLocale>zh-TW</DefaultLocale>
-  <DisplayName DefaultValue="SVG to PPT"/>
+  <DisplayName DefaultValue="SVG Code Paste"/>
   <Description DefaultValue="貼上 SVG 程式碼，直接以向量圖插入投影片。"/>
-  <IconUrl DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-64.png"/>
-  <SupportUrl DefaultValue="https://github.com/AG-0814/svg-to-ppt"/>
+  <IconUrl DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-64.png"/>
+  <SupportUrl DefaultValue="https://github.com/AG-0814/ppt-svg-code-paste"/>
   <AppDomains>
     <AppDomain>https://ag-0814.github.io</AppDomain>
   </AppDomains>
@@ -20,7 +20,7 @@
     <Host Name="Presentation"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://ag-0814.github.io/svg-to-ppt/taskpane.html"/>
+    <SourceLocation DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/taskpane.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -65,18 +65,18 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16" DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-16.png"/>
-        <bt:Image id="Icon.32" DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-32.png"/>
-        <bt:Image id="Icon.80" DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-80.png"/>
+        <bt:Image id="Icon.16" DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-16.png"/>
+        <bt:Image id="Icon.32" DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-32.png"/>
+        <bt:Image id="Icon.80" DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://ag-0814.github.io/svg-to-ppt/taskpane.html"/>
-        <bt:Url id="Support.Url" DefaultValue="https://github.com/AG-0814/svg-to-ppt"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/taskpane.html"/>
+        <bt:Url id="Support.Url" DefaultValue="https://github.com/AG-0814/ppt-svg-code-paste"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="Group.Label" DefaultValue="SVG"/>
         <bt:String id="Button.Label" DefaultValue="SVG 插入"/>
-        <bt:String id="GetStarted.Title" DefaultValue="SVG to PPT 已載入"/>
+        <bt:String id="GetStarted.Title" DefaultValue="SVG Code Paste 已載入"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="Button.Tip" DefaultValue="開啟右側窗格，貼上 SVG 程式碼插入向量圖。"/>

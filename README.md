@@ -4,6 +4,10 @@ PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量�
 
 適合把 AI 生成或從圖示庫複製來的 SVG 程式碼，快速放進簡報。
 
+![SVG Code Paste 在 PowerPoint 中的畫面：功能區的「SVG 插入」按鈕、右側窗格貼上程式碼與預覽，插入後的向量圖示位於投影片中央](docs/screenshot.png)
+
+示例圖中的圖示 (耳機、階梯) 取自 [Phosphor Icons](https://phosphoricons.com/)，採 [MIT 授權](https://github.com/phosphor-icons/core/blob/main/LICENSE)。
+
 ## 功能
 
 - 右側窗格貼上程式碼，即時預覽 (棋盤格背景可看出透明區)
@@ -60,3 +64,4 @@ npx office-addin-dev-settings unregister "D:\OfficeAddins\ppt-svg-code-paste\man
 | `manifest.xml` | 增益集設定：窗格網址、功能區按鈕、圖示 |
 | `taskpane.html` | 窗格本體 (單一 HTML，無建置步驟) |
 | `assets/` | 功能區與增益集清單用的圖示 |
+| `docs/` | README 用的示意截圖 |

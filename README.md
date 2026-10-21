@@ -65,3 +65,7 @@ npx office-addin-dev-settings unregister "D:\OfficeAddins\ppt-svg-code-paste\man
 | `taskpane.html` | 窗格本體 (單一 HTML，無建置步驟) |
 | `assets/` | 功能區與增益集清單用的圖示 |
 | `docs/` | README 用的示意截圖 |
+
+## 授權
+
+本專案以 MIT License 釋出，詳見 [LICENSE](LICENSE)。

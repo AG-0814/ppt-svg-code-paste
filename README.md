@@ -19,7 +19,7 @@ PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量�
 - 可設定插入寬度 (pt，0 = 原尺寸)，Ctrl+Enter 插入，可勾選插入後清空
 - 插入結果是 SVG 圖形 (向量)，可在 PPT 裡右鍵「轉換為圖形」後改色、拆解
 - 技術上使用 Office.js `setSelectedDataAsync` 搭配 `Office.CoercionType.XmlSvg`
-- 介面語言跟隨 Office 顯示語言 (中文顯示繁中，其他語系顯示英文)
+- 介面語言 (窗格與功能區按鈕) 跟隨 Office 顯示語言，中文顯示繁中，其他語系一律顯示英文
 
 ## 系統需求
 

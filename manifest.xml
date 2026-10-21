@@ -7,12 +7,12 @@
   <Id>4fa1aa32-29a9-4519-82dd-e7d9b2a5e3cc</Id>
   <Version>1.0.2.0</Version>
   <ProviderName>AG-0814</ProviderName>
-  <DefaultLocale>zh-TW</DefaultLocale>
-  <DisplayName DefaultValue="SVG Code Paste">
-    <Override Locale="en-US" Value="SVG Code Paste"/>
-  </DisplayName>
-  <Description DefaultValue="貼上 SVG 程式碼，直接以向量圖插入投影片。">
-    <Override Locale="en-US" Value="Paste SVG code and insert it into the slide as a vector graphic."/>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="SVG Code Paste"/>
+  <Description DefaultValue="Paste SVG code and insert it into the slide as a vector graphic.">
+    <Override Locale="zh-TW" Value="貼上 SVG 程式碼，直接以向量圖插入投影片。"/>
+    <Override Locale="zh-HK" Value="貼上 SVG 程式碼，直接以向量圖插入投影片。"/>
+    <Override Locale="zh-CN" Value="貼上 SVG 程式碼，直接以向量圖插入投影片。"/>
   </Description>
   <IconUrl DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://ag-0814.github.io/ppt-svg-code-paste/assets/icon-64.png"/>
@@ -79,19 +79,27 @@
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="Group.Label" DefaultValue="SVG"/>
-        <bt:String id="Button.Label" DefaultValue="SVG 插入">
-          <bt:Override Locale="en-US" Value="Insert SVG"/>
+        <bt:String id="Button.Label" DefaultValue="Insert SVG">
+          <bt:Override Locale="zh-TW" Value="SVG 插入"/>
+          <bt:Override Locale="zh-HK" Value="SVG 插入"/>
+          <bt:Override Locale="zh-CN" Value="SVG 插入"/>
         </bt:String>
-        <bt:String id="GetStarted.Title" DefaultValue="SVG Code Paste 已載入">
-          <bt:Override Locale="en-US" Value="SVG Code Paste is ready"/>
+        <bt:String id="GetStarted.Title" DefaultValue="SVG Code Paste is ready">
+          <bt:Override Locale="zh-TW" Value="SVG Code Paste 已載入"/>
+          <bt:Override Locale="zh-HK" Value="SVG Code Paste 已載入"/>
+          <bt:Override Locale="zh-CN" Value="SVG Code Paste 已載入"/>
         </bt:String>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="Button.Tip" DefaultValue="開啟右側窗格，貼上 SVG 程式碼插入向量圖。">
-          <bt:Override Locale="en-US" Value="Open the side pane and paste SVG code to insert a vector graphic."/>
+        <bt:String id="Button.Tip" DefaultValue="Open the side pane and paste SVG code to insert a vector graphic.">
+          <bt:Override Locale="zh-TW" Value="開啟右側窗格，貼上 SVG 程式碼插入向量圖。"/>
+          <bt:Override Locale="zh-HK" Value="開啟右側窗格，貼上 SVG 程式碼插入向量圖。"/>
+          <bt:Override Locale="zh-CN" Value="開啟右側窗格，貼上 SVG 程式碼插入向量圖。"/>
         </bt:String>
-        <bt:String id="GetStarted.Desc" DefaultValue="到「常用」索引標籤按「SVG 插入」開啟窗格。">
-          <bt:Override Locale="en-US" Value="Go to the Home tab and click Insert SVG to open the pane."/>
+        <bt:String id="GetStarted.Desc" DefaultValue="Go to the Home tab and click Insert SVG to open the pane.">
+          <bt:Override Locale="zh-TW" Value="到「常用」索引標籤按「SVG 插入」開啟窗格。"/>
+          <bt:Override Locale="zh-HK" Value="到「常用」索引標籤按「SVG 插入」開啟窗格。"/>
+          <bt:Override Locale="zh-CN" Value="到「常用」索引標籤按「SVG 插入」開啟窗格。"/>
         </bt:String>
       </bt:LongStrings>
     </Resources>

@@ -2,7 +2,9 @@
 
 PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量圖插入目前的投影片，不用先存成 .svg 檔再匯入。
 
-適合把 AI 生成或從圖示庫複製來的 SVG 程式碼，快速放進簡報。
+適合把 AI 生成或從圖示庫複製來的 SVG 程式碼，快速放進簡報，而不用再透過增益集的 Claude for PowerPoint 的助理插入圖案。
+
+本人之主要目的就是跳過等待 Claude 插入XML代碼的思考與執行時間，因為這對我來說是一個很常用的功能，但逐一下載 SVG 圖檔再拖入對應的簡報頁面又很麻煩。
 
 ![SVG Code Paste 在 PowerPoint 中的畫面：功能區的「SVG 插入」按鈕、右側窗格貼上程式碼與預覽，插入後的向量圖示位於投影片中央](docs/screenshot.png)
 
@@ -49,6 +51,8 @@ PowerPoint 工作窗格增益集：貼上 SVG (XML) 程式碼，直接以向量�
 | 「共用資料夾」分頁看不到增益集 | 確認信任中心該路徑有勾「顯示於功能表中」、PowerPoint 有完全重開，且路徑底下直接就是 `manifest.xml`。 |
 | 窗格空白或顯示載入失敗 | 確認可以連到 <https://ag-0814.github.io/ppt-svg-code-paste/taskpane.html>。 |
 | 插入按鈕是灰色、顯示「沒有連上 PowerPoint」 | 頁面是在一般瀏覽器裡開的。只有在 PowerPoint 的窗格裡才能插入。 |
+
+如果仍有其他問題歡迎提 Issue 或 Pull Request。
 
 ## 檔案說明
 

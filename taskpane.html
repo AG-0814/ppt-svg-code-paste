@@ -65,18 +65,66 @@
 </style>
 </head>
 <body>
-  <textarea id="code" spellcheck="false" placeholder="貼上 SVG 程式碼 (<svg ...>...</svg>)"></textarea>
-  <div id="preview">預覽區</div>
+  <textarea id="code" spellcheck="false"></textarea>
+  <div id="preview"></div>
   <div class="row">
-    <label>寬度 pt <input id="width" type="number" min="0" max="2000" value="120"></label>
-    <label><input id="clear" type="checkbox"> 插入後清空</label>
+    <label><span id="widthLabel"></span> <input id="width" type="number" min="0" max="2000" value="120"></label>
+    <label><input id="clear" type="checkbox"> <span id="clearLabel"></span></label>
   </div>
-  <button id="insert" disabled>插入到投影片 (Ctrl+Enter)</button>
-  <div id="status">載入中...</div>
+  <button id="insert" disabled></button>
+  <div id="status"></div>
 
 <script>
   const $ = (id) => document.getElementById(id);
   const code = $('code'), preview = $('preview'), statusEl = $('status'), btn = $('insert');
+
+  // 介面文字：中文語系顯示繁中，其他語系顯示英文
+  const STRINGS = {
+    zh: {
+      placeholder: '貼上 SVG 程式碼 (<svg ...>...</svg>)',
+      preview: '預覽區',
+      width: '寬度 pt',
+      clear: '插入後清空',
+      insert: '插入到投影片 (Ctrl+Enter)',
+      loading: '載入中...',
+      noSvgTag: '找不到 <svg 開頭的標籤。',
+      badXml: 'SVG 不是合法的 XML：',
+      insertFailed: '插入失敗：',
+      inserted: '已插入向量圖。',
+      noOffice: '沒有連上 PowerPoint，可以預覽但無法插入。',
+      ready: '貼上程式碼後按插入。',
+      wrongHost: '這個頁面要在 PowerPoint 的增益集窗格裡使用。',
+    },
+    en: {
+      placeholder: 'Paste SVG code (<svg ...>...</svg>)',
+      preview: 'Preview',
+      width: 'Width pt',
+      clear: 'Clear after insert',
+      insert: 'Insert into slide (Ctrl+Enter)',
+      loading: 'Loading...',
+      noSvgTag: 'No tag starting with <svg was found.',
+      badXml: 'SVG is not valid XML: ',
+      insertFailed: 'Insert failed: ',
+      inserted: 'Vector graphic inserted.',
+      noOffice: 'Not connected to PowerPoint. Preview works, but inserting is disabled.',
+      ready: 'Paste your code, then click Insert.',
+      wrongHost: 'This page must be used inside the PowerPoint add-in pane.',
+    },
+  };
+  // 網址加 ?lang=en 或 ?lang=zh 可強制指定語言
+  const forcedLang = new URLSearchParams(location.search).get('lang');
+  let T;
+  function applyLanguage(lang) {
+    T = STRINGS[/^zh/i.test(forcedLang || lang || '') ? 'zh' : 'en'];
+    document.documentElement.lang = T === STRINGS.zh ? 'zh-Hant' : 'en';
+    code.placeholder = T.placeholder;
+    $('widthLabel').textContent = T.width;
+    $('clearLabel').textContent = T.clear;
+    btn.textContent = T.insert;
+    if (!code.value.trim()) preview.textContent = T.preview;
+  }
+  applyLanguage(navigator.language);
+  let officeReady = false;
 
   function setStatus(msg, kind) {
     statusEl.textContent = msg;
@@ -87,13 +135,13 @@
   function cleanSvg(raw) {
     let t = raw.trim().replace(/^```[a-zA-Z]*\s*/, '').replace(/\s*```$/, '');
     const start = t.indexOf('<svg');
-    if (start < 0) throw new Error('找不到 <svg 開頭的標籤。');
+    if (start < 0) throw new Error(T.noSvgTag);
     const end = t.lastIndexOf('</svg>');
     t = end >= 0 ? t.slice(start, end + 6) : t.slice(start);
     if (!/<svg[^>]*xmlns\s*=/.test(t)) t = t.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
     const doc = new DOMParser().parseFromString(t, 'image/svg+xml');
     const pe = doc.querySelector('parsererror');
-    if (pe) throw new Error('SVG 不是合法的 XML：' + pe.textContent.split('\n')[0]);
+    if (pe) throw new Error(T.badXml + pe.textContent.split('\n')[0]);
     return t;
   }
 
@@ -101,7 +149,7 @@
   code.addEventListener('input', () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (!code.value.trim()) { preview.textContent = '預覽區'; return; }
+      if (!code.value.trim()) { preview.textContent = T.preview; return; }
       try { preview.innerHTML = cleanSvg(code.value); }
       catch (e) { preview.innerHTML = ''; const d = document.createElement('div'); d.className = 'err'; d.textContent = e.message; preview.appendChild(d); }
     }, 250);
@@ -118,10 +166,10 @@
     Office.context.document.setSelectedDataAsync(svg, opts, (r) => {
       btn.disabled = false;
       if (r.status === Office.AsyncResultStatus.Failed) {
-        setStatus('插入失敗：' + r.error.message, 'err');
+        setStatus(T.insertFailed + r.error.message, 'err');
       } else {
-        setStatus('已插入向量圖。', 'ok');
-        if ($('clear').checked) { code.value = ''; preview.textContent = '預覽區'; }
+        setStatus(T.inserted, 'ok');
+        if ($('clear').checked) { code.value = ''; preview.textContent = T.preview; }
       }
     });
   }
@@ -131,20 +179,23 @@
     if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); if (!btn.disabled) insert(); }
   });
 
+  setStatus(T.loading);
   setTimeout(() => {
-    if (btn.disabled && statusEl.textContent === '載入中...') setStatus('沒有連上 PowerPoint，可以預覽但無法插入。', 'err');
+    if (!officeReady) setStatus(T.noOffice, 'err');
   }, 4000);
 
   Office.onReady((info) => {
+    officeReady = true;
+    if (Office.context && Office.context.displayLanguage) applyLanguage(Office.context.displayLanguage);
     if (info.host === Office.HostType.PowerPoint) {
       btn.disabled = false;
-      setStatus('貼上程式碼後按插入。');
+      setStatus(T.ready);
       if (Office.context.officeTheme) {
         const dark = parseInt(Office.context.officeTheme.bodyBackgroundColor.slice(1, 3), 16) < 128;
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       }
     } else {
-      setStatus('這個頁面要在 PowerPoint 的增益集窗格裡使用。', 'err');
+      setStatus(T.wrongHost, 'err');
     }
   });
 </script>

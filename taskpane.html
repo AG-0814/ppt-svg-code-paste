@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SVG to PPT</title>
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1f1f1f; --muted: #6b6b6b; --line: #d0d0d0;
+    --field: #fafafa; --accent: #c43e1c; --accent-fg: #ffffff;
+    --ok: #107c10; --err: #c42b1c; --checker: #eeeeee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1f1f1f; --fg: #f0f0f0; --muted: #a0a0a0; --line: #444;
+      --field: #2a2a2a; --accent: #e0643f; --accent-fg: #111;
+      --ok: #6ccb5f; --err: #ff8a7a; --checker: #333;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1f1f1f; --fg: #f0f0f0; --muted: #a0a0a0; --line: #444;
+    --field: #2a2a2a; --accent: #e0643f; --accent-fg: #111;
+    --ok: #6ccb5f; --err: #ff8a7a; --checker: #333;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font: 13px "Segoe UI", "Microsoft JhengHei UI", sans-serif;
+    display: flex; flex-direction: column; gap: 8px; padding: 10px;
+  }
+  textarea {
+    flex: 1 1 45%; min-height: 120px; resize: none; width: 100%;
+    font: 12px Consolas, monospace; padding: 8px;
+    background: var(--field); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 4px;
+  }
+  textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  #preview {
+    flex: 1 1 35%; min-height: 100px; border: 1px solid var(--line); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    color: var(--muted);
+    background-color: var(--bg);
+    background-image: linear-gradient(45deg, var(--checker) 25%, transparent 25%, transparent 75%, var(--checker) 75%),
+                      linear-gradient(45deg, var(--checker) 25%, transparent 25%, transparent 75%, var(--checker) 75%);
+    background-size: 16px 16px; background-position: 0 0, 8px 8px;
+  }
+  #preview svg { width: 80%; height: 80%; }
+  #preview .err { color: var(--err); padding: 8px; text-align: center; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .row label { display: flex; align-items: center; gap: 4px; color: var(--muted); }
+  input[type=number] {
+    width: 64px; padding: 3px 4px; background: var(--field); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 4px;
+  }
+  button {
+    width: 100%; padding: 8px; border: 0; border-radius: 4px; cursor: pointer;
+    background: var(--accent); color: var(--accent-fg); font: inherit; font-weight: 600;
+  }
+  button:disabled { opacity: .5; cursor: default; }
+  #status { min-height: 1.4em; color: var(--muted); }
+  #status.ok { color: var(--ok); }
+  #status.err { color: var(--err); }
+</style>
+</head>
+<body>
+  <textarea id="code" spellcheck="false" placeholder="貼上 SVG 程式碼 (<svg ...>...</svg>)"></textarea>
+  <div id="preview">預覽區</div>
+  <div class="row">
+    <label>寬度 pt <input id="width" type="number" min="0" max="2000" value="120"></label>
+    <label><input id="clear" type="checkbox"> 插入後清空</label>
+  </div>
+  <button id="insert" disabled>插入到投影片 (Ctrl+Enter)</button>
+  <div id="status">載入中...</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const code = $('code'), preview = $('preview'), statusEl = $('status'), btn = $('insert');
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.className = kind || '';
+  }
+
+  // 清掉聊天複製夾帶的 ``` 標記、補 xmlns、驗證 XML
+  function cleanSvg(raw) {
+    let t = raw.trim().replace(/^```[a-zA-Z]*\s*/, '').replace(/\s*```$/, '');
+    const start = t.indexOf('<svg');
+    if (start < 0) throw new Error('找不到 <svg 開頭的標籤。');
+    const end = t.lastIndexOf('</svg>');
+    t = end >= 0 ? t.slice(start, end + 6) : t.slice(start);
+    if (!/<svg[^>]*xmlns\s*=/.test(t)) t = t.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    const doc = new DOMParser().parseFromString(t, 'image/svg+xml');
+    const pe = doc.querySelector('parsererror');
+    if (pe) throw new Error('SVG 不是合法的 XML：' + pe.textContent.split('\n')[0]);
+    return t;
+  }
+
+  let timer;
+  code.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (!code.value.trim()) { preview.textContent = '預覽區'; return; }
+      try { preview.innerHTML = cleanSvg(code.value); }
+      catch (e) { preview.innerHTML = ''; const d = document.createElement('div'); d.className = 'err'; d.textContent = e.message; preview.appendChild(d); }
+    }, 250);
+  });
+
+  function insert() {
+    let svg;
+    try { svg = cleanSvg(code.value); }
+    catch (e) { setStatus(e.message, 'err'); return; }
+    const opts = { coercionType: Office.CoercionType.XmlSvg };
+    const w = Number($('width').value);
+    if (w > 0) opts.imageWidth = w;
+    btn.disabled = true;
+    Office.context.document.setSelectedDataAsync(svg, opts, (r) => {
+      btn.disabled = false;
+      if (r.status === Office.AsyncResultStatus.Failed) {
+        setStatus('插入失敗：' + r.error.message, 'err');
+      } else {
+        setStatus('已插入向量圖。', 'ok');
+        if ($('clear').checked) { code.value = ''; preview.textContent = '預覽區'; }
+      }
+    });
+  }
+
+  btn.addEventListener('click', insert);
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); if (!btn.disabled) insert(); }
+  });
+
+  setTimeout(() => {
+    if (btn.disabled && statusEl.textContent === '載入中...') setStatus('沒有連上 PowerPoint，可以預覽但無法插入。', 'err');
+  }, 4000);
+
+  Office.onReady((info) => {
+    if (info.host === Office.HostType.PowerPoint) {
+      btn.disabled = false;
+      setStatus('貼上程式碼後按插入。');
+      if (Office.context.officeTheme) {
+        const dark = parseInt(Office.context.officeTheme.bodyBackgroundColor.slice(1, 3), 16) < 128;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      }
+    } else {
+      setStatus('這個頁面要在 PowerPoint 的增益集窗格裡使用。', 'err');
+    }
+  });
+</script>
+</body>
+</html>

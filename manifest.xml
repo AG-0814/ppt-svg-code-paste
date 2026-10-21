@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+           xsi:type="TaskPaneApp">
+  <Id>4fa1aa32-29a9-4519-82dd-e7d9b2a5e3cc</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>AG-0814</ProviderName>
+  <DefaultLocale>zh-TW</DefaultLocale>
+  <DisplayName DefaultValue="SVG to PPT"/>
+  <Description DefaultValue="貼上 SVG 程式碼，直接以向量圖插入投影片。"/>
+  <IconUrl DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-64.png"/>
+  <SupportUrl DefaultValue="https://github.com/AG-0814/svg-to-ppt"/>
+  <AppDomains>
+    <AppDomain>https://ag-0814.github.io</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Presentation"/>
+  </Hosts>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://ag-0814.github.io/svg-to-ppt/taskpane.html"/>
+  </DefaultSettings>
+  <Permissions>ReadWriteDocument</Permissions>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Presentation">
+        <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="GetStarted.Title"/>
+            <Description resid="GetStarted.Desc"/>
+            <LearnMoreUrl resid="Support.Url"/>
+          </GetStarted>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabHome">
+              <Group id="SvgToPpt.Group">
+                <Label resid="Group.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon.16"/>
+                  <bt:Image size="32" resid="Icon.32"/>
+                  <bt:Image size="80" resid="Icon.80"/>
+                </Icon>
+                <Control xsi:type="Button" id="SvgToPpt.Open">
+                  <Label resid="Button.Label"/>
+                  <Supertip>
+                    <Title resid="Button.Label"/>
+                    <Description resid="Button.Tip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16"/>
+                    <bt:Image size="32" resid="Icon.32"/>
+                    <bt:Image size="80" resid="Icon.80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>SvgToPptPane</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.16" DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-16.png"/>
+        <bt:Image id="Icon.32" DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-32.png"/>
+        <bt:Image id="Icon.80" DefaultValue="https://ag-0814.github.io/svg-to-ppt/assets/icon-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://ag-0814.github.io/svg-to-ppt/taskpane.html"/>
+        <bt:Url id="Support.Url" DefaultValue="https://github.com/AG-0814/svg-to-ppt"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="Group.Label" DefaultValue="SVG"/>
+        <bt:String id="Button.Label" DefaultValue="SVG 插入"/>
+        <bt:String id="GetStarted.Title" DefaultValue="SVG to PPT 已載入"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="Button.Tip" DefaultValue="開啟右側窗格，貼上 SVG 程式碼插入向量圖。"/>
+        <bt:String id="GetStarted.Desc" DefaultValue="到「常用」索引標籤按「SVG 插入」開啟窗格。"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
